@@ -1,4 +1,6 @@
 package com.jwt.securirty.controller;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,12 +36,16 @@ import com.jwt.securirty.service.BookService;
     	userRepository.save(userInfo);
     }
  
-//    @GetMapping("/admin/hello")
-//    public String adminHello() {
-//        return "Hello, Admin!";
-//    }
+
     @PostMapping("/user/addbook")
     public void addBook(@RequestBody Book book) {
     	bookService.addBook(book);
     }
+    
+    @GetMapping("/user/allbooks")
+    public List<Book> allBooks(){
+    	return bookService.allBooks();
+    }
+
+    
 }
