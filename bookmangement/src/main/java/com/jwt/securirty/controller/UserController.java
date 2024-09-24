@@ -7,8 +7,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.service.annotation.PutExchange;
 
 import com.jwt.securirty.dto.MessageDto;
 import com.jwt.securirty.exception.InvalidIsbnException;
@@ -62,6 +64,20 @@ import com.jwt.securirty.service.BookService;
 			dto.setMsg(e.getMessage());
 			return ResponseEntity.badRequest().body(dto);
 			
+		}
+    }
+    
+    @PutMapping("/user/updatebook/{isbn}")
+    public ResponseEntity<?> updateBookByIsbn(@PathVariable String isbn,@RequestBody Book book, MessageDto dto)
+    {
+    	try {
+    		Book updatedBook = bookService.updateBookByIsbn(isbn,book);
+    		return ResponseEntity.ok(updatedBook);
+    		
+			
+		} catch (InvalidIsbnException e) {
+			dto.setMsg(e.getMessage());
+			return ResponseEntity.badRequest().body(dto);
 		}
     }
 

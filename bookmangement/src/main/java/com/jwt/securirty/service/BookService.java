@@ -33,6 +33,21 @@ public class BookService {
 			throw new InvalidIsbnException("book with given isbn number not exists");
 		return book.get();
 	}
+
+	public Book updateBookByIsbn(String isbn, Book book) throws InvalidIsbnException {
+		// TODO Auto-generated method stub
+		Optional<Book> oldBook=bookRepository.getBookByIsbn(isbn);
+		if(oldBook.isEmpty())
+			throw new InvalidIsbnException("book with given isbn number not exists");
+		
+		Book bookDB=oldBook.get();
+		bookDB.setTitle(book.getTitle());
+		bookDB.setAuthor(book.getAuthor());
+		bookDB.setYear(book.getYear());
+		
+		return bookRepository.save(bookDB);
+	
+	}
 	
 	
 
