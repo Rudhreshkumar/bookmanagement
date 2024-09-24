@@ -2,12 +2,16 @@ package com.jwt.securirty.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.jwt.securirty.dto.MessageDto;
+import com.jwt.securirty.exception.InvalidIsbnException;
 import com.jwt.securirty.model.Book;
 import com.jwt.securirty.model.UserInfo;
 import com.jwt.securirty.repo.UserRepository;
@@ -45,6 +49,20 @@ import com.jwt.securirty.service.BookService;
     @GetMapping("/user/allbooks")
     public List<Book> allBooks(){
     	return bookService.allBooks();
+    }
+    
+    @GetMapping("/user/getbook/{isbn}")
+    public ResponseEntity<?>  getBookByIsbn(@PathVariable String isbn,MessageDto dto)
+    {
+    	try {
+    		Book book = bookService.getBookByIsbn(isbn);
+			return ResponseEntity.ok(book);
+    		
+		} catch (InvalidIsbnException e) {
+			dto.setMsg(e.getMessage());
+			return ResponseEntity.badRequest().body(dto);
+			
+		}
     }
 
     
