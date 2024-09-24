@@ -48,6 +48,18 @@ public class BookService {
 		return bookRepository.save(bookDB);
 	
 	}
+
+	public void deleteBookByIsbn(String isbn) throws InvalidIsbnException {
+		Optional<Book> book=bookRepository.getBookByIsbn(isbn);
+		if(book.isEmpty())
+			throw new InvalidIsbnException("book with given isbn number not exists");
+		
+		Book bookDB=book.get();
+		
+		bookRepository.delete(bookDB);
+		
+		
+	}
 	
 	
 
